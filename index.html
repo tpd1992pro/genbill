@@ -5,10 +5,11 @@
 <title>Bill Image Generator</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
+
 <body style="background:#f2f2f2;">
 
 <div id="billBox" style="
-    width: 300px;
+    width: 320px;
     padding: 20px;
     margin: 40px auto;
     border-radius: 16px;
@@ -22,7 +23,9 @@
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const text = params.get("text") || "Không có dữ liệu";
+
+const raw = params.get("text") || "";
+const text = decodeURIComponent(raw.replace(/\+/g, " "));
 document.getElementById("billBox").innerText = text;
 
 setTimeout(() => {
@@ -32,14 +35,14 @@ setTimeout(() => {
                 await navigator.clipboard.write([
                     new ClipboardItem({ "image/png": blob })
                 ]);
-                alert("✔ Ảnh đã được copy vào clipboard!");
+                alert("✔ Ảnh đã copy vào clipboard!");
                 window.close();
             } catch (err) {
                 alert("❌ Không thể copy ảnh: " + err);
             }
         });
     });
-}, 300);
+}, 500);
 </script>
 
 </body>
